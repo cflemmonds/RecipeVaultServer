@@ -2,6 +2,10 @@ const {DataTypes} = require("sequelize");
 const db = require("../db");
 
 const Pantry = db.define("pantry", {
+    title: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
     meat: {
         type: DataTypes.STRING,
         allowNull: true

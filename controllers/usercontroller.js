@@ -18,6 +18,7 @@ router.post('/register', async (req, res) => {
             email,
             password: bcrypt.hashSync(password, 13)
         });
+        console.log(user)
 
         let token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
         res.status(201).json({
@@ -39,12 +40,12 @@ router.post('/register', async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    let { email, password } = req.body;
+    let { username, password } = req.body;
 
     try {
         let loginUser = await UserModel.findOne({
             where: {
-                email: email
+                username: username
             }
         })
 

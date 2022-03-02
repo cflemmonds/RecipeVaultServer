@@ -11,23 +11,23 @@ router.get('/practice', (req, res) => {
 router.post('/recipeEntry', async (req, res) => {
     try {
         const createRecipe = await PantryModel.create({
+            title: req.body.title,
             meat: req.body.meat,
             veggies: req.body.veggies,
             fruit: req.body.fruit,
             spices: req.body.spices,
-            servings: req.body.servi,
+            servings: req.body.servings,
             timeToCook: req.body.timeToCook,
-            value: req.body.value,
-            ownerID: req.user.id
+            ownerID: req.body.ownerID
         })
-
+        console.log(createRecipe)
         res.status(201).json({
-            message: "Property successfully created",
+            message: "Recipe successfully created",
             createRecipe
         })
     } catch (err) {
         res.status(500).json({
-            message: `Failed to create property ${err}`
+            message: `Failed to create recipe ${err}`
         })
     }
 })
