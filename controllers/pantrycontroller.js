@@ -9,18 +9,20 @@ router.get('/practice', (req, res) => {
 //! RECIPE ENDPOINTS
 
 router.post('/recipeEntry', async (req, res) => {
+    const { title, meat, veggies, fruit, spices, servings, timeToCook } = req.body
+    const { id } = req.user
     try {
         const createRecipe = await PantryModel.create({
-            title: req.body.title,
-            meat: req.body.meat,
-            veggies: req.body.veggies,
-            fruit: req.body.fruit,
-            spices: req.body.spices,
-            servings: req.body.servings,
-            timeToCook: req.body.timeToCook,
-            ownerID: req.body.ownerID
+            title,
+            meat,
+            veggies,
+            fruit,
+            spices,
+            servings,
+            timeToCook,
+            ownerID: id
         })
-        console.log(createRecipe)
+        
         res.status(201).json({
             message: "Recipe successfully created",
             createRecipe
@@ -41,13 +43,30 @@ router.get('/myRecipe/:id', async (req, res) => {
             }
         })
         res.status(200).json(myRecipes);
-    } catch(err) {
-        res.status(500).json({error: err})
+    } catch (err) {
+        res.status(500).json({ error: err })
     }
 })
 
-router.put('/editRecipe/:id', (req, res) => {
-    res.send("You can edit your recipe");
+router.put('/editRecipe/:id', async (req, res) => {
+    const { title, meat, veggies, fruit, spices, servings, timeToCook } = req.body
+    try {
+        await PantryModel.update(
+            { title, meat, veggies, fruit, spices, servings, timeToCook },
+            {where: {id: req.params.id}, returning: true}
+            
+        )
+        .then((result)=> {
+            res.status(200).json({
+                message: "Recipe updated.",
+                updatedRecipe: result
+            })
+        })
+    } catch (err) {
+        res.status(500).json({
+            message: `Failed to update property ${err}`
+        })
+    }
 })
 
 router.delete('/deleteRecipe/:id', (req, res) => {
