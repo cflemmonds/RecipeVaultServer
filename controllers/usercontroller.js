@@ -3,6 +3,7 @@ const { UserModel } = require("../models");
 const { UniqueConstraintError } = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const models = require("../models");
 
 // router.get('/practice', (req, res) => {
 //     res.send('Hey!! This is a practice route!')
@@ -33,7 +34,7 @@ router.post('/register', async (req, res) => {
             })
         } else {
             res.status(500).json({
-                message: "Failed to register user"
+                message: err.message
             })
         }
     }
@@ -68,6 +69,34 @@ router.post("/login", async (req, res) => {
     } catch (err) {
         res.status(500).json({
             message: "Failed to login",
+        })
+    }
+})
+
+router.get('/userinfo', async (req, res) => {
+    try {
+        await models.UserModel.findAll({
+            include: [
+                {
+                    model: models.PostsModel,
+                    include: [
+                        {
+                            model: models.CommentsModel
+                        }
+                    ]
+                }
+            ]
+        })
+        .then(
+            users => {
+                res.status(200).json({
+                    users: users
+                })
+            }
+        )
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
         })
     }
 })
