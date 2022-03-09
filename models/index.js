@@ -13,11 +13,8 @@ CommentsModel.belongsTo(PostsModel);
 
 
 module.exports = {
-    // DB_CONNECTION_STRING: db,
-    models: {
-        UserModel,
-        PantryModel, 
-        PostsModel, 
-        CommentsModel
-    }
+    UserModel,
+    PantryModel,
+    PostsModel,
+    CommentsModel
 };

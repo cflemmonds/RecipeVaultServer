@@ -9,6 +9,8 @@ const models = require("../models");
 //     res.send('Hey!! This is a practice route!')
 // })
 
+//! REGISTER
+
 router.post('/register', async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body;
     try {
@@ -39,6 +41,8 @@ router.post('/register', async (req, res) => {
         }
     }
 })
+
+//! LOGIN
 
 router.post("/login", async (req, res) => {
     let { username, password } = req.body;
@@ -72,6 +76,8 @@ router.post("/login", async (req, res) => {
         })
     }
 })
+
+//! GET USER INFO
 
 router.get('/userinfo', async (req, res) => {
     try {

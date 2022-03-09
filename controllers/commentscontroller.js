@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const { models } = require('../models');
+const { CommentsModel } = require('../models');
 
 router.post('/comment', async (req, res) => {
     
-    const { content, postId } = req.body.comment;
+    const { content, postId } = req.body;
 
     try {
-        await models.CommentsModel.create({
+        await CommentsModel.create({
             content: content,
             postId: postId,
             userId: req.user.id

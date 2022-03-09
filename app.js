@@ -14,7 +14,7 @@ app.use('/posts', controllers.postsController);
 app.use('/comments', controllers.commentsController);
 
 dbConnection.authenticate()
-    .then(()=> dbConnection.sync({force: true}))
+    .then(()=> dbConnection.sync(/* {force: true} */))
     .then(()=> {
         // app.listen(process.env.PORT, ()=> {
         //     console.log(`[Server]: Recipe Vault is listening on {process.env.PORT}.`)
