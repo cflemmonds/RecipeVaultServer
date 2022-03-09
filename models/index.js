@@ -1,4 +1,20 @@
 const UserModel = require('./user');
-const PantryModel = require("./pantry")
+const PantryModel = require('./pantry');
+const PostsModel = require('./posts');
+const CommentsModel = require('./comments');
 
-module.exports = {UserModel};
+UserModel.hasMany(PostsModel);
+UserModel.hasMany(CommentsModel);
+
+PostsModel.belongsTo(UserModel);
+PostsModel.hasMany(CommentsModel);
+
+CommentsModel.belongsTo(PostsModel);
+
+
+module.exports = {
+    UserModel,
+    PantryModel,
+    PostsModel,
+    CommentsModel
+};

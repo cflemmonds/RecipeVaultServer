@@ -3,10 +3,13 @@ const { UserModel } = require("../models");
 const { UniqueConstraintError } = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const models = require("../models");
 
 // router.get('/practice', (req, res) => {
 //     res.send('Hey!! This is a practice route!')
 // })
+
+//! REGISTER
 
 router.post('/register', async (req, res) => {
     const { firstName, lastName, username, email, password } = req.body;
@@ -18,6 +21,7 @@ router.post('/register', async (req, res) => {
             email,
             password: bcrypt.hashSync(password, 13)
         });
+        console.log(user)
 
         let token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
         res.status(201).json({
@@ -32,19 +36,21 @@ router.post('/register', async (req, res) => {
             })
         } else {
             res.status(500).json({
-                message: "Failed to register user"
+                message: err.message
             })
         }
     }
 })
 
+//! LOGIN
+
 router.post("/login", async (req, res) => {
-    let { email, password } = req.body;
+    let { username, password } = req.body;
 
     try {
         let loginUser = await UserModel.findOne({
             where: {
-                email: email
+                username: username
             }
         })
 
@@ -67,6 +73,36 @@ router.post("/login", async (req, res) => {
     } catch (err) {
         res.status(500).json({
             message: "Failed to login",
+        })
+    }
+})
+
+//! GET USER INFO
+
+router.get('/userinfo', async (req, res) => {
+    try {
+        await models.UserModel.findAll({
+            include: [
+                {
+                    model: models.PostsModel,
+                    include: [
+                        {
+                            model: models.CommentsModel
+                        }
+                    ]
+                }
+            ]
+        })
+        .then(
+            users => {
+                res.status(200).json({
+                    users: users
+                })
+            }
+        )
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
         })
     }
 })

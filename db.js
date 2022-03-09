@@ -1,8 +1,10 @@
 const {Sequelize} = require('sequelize');
 
-const db = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    ssl: process.env.ENVIRONMENT === 'production'
-})
+const sequelize = new Sequelize("postgres://postgres:cosmiclocal@localhost:5432/recipe-vault")
 
-module.exports = db;
+// const db = new Sequelize(process.env.DATABASE_URL, {
+//     dialect: 'postgres',
+//     ssl: process.env.ENVIRONMENT === 'production'
+// })
+
+module.exports = sequelize;
