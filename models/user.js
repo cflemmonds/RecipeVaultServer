@@ -33,7 +33,8 @@ const UserModel = db.define("user", {
     },
     admin: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false, 
+        defaultValue: false
     }
 })
 

@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
             username,
             email,
             password: bcrypt.hashSync(password, 13),
-            admin,
+            admin: req.body.admin ? true : false,
         });
         console.log(user)
 
