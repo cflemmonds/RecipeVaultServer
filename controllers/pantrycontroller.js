@@ -28,13 +28,14 @@ router.post('/recipeEntry', async (req, res) => {
             createRecipe
         })
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             message: `Failed to create recipe ${err}`
         })
     }
 })
 
-router.get('/myRecipe/:id', async (req, res) => {
+router.get('/myPantry', async (req, res) => {
     const { id } = req.user;
     try {
         const myRecipes = await PantryModel.findAll({
@@ -54,7 +55,6 @@ router.put('/editRecipe/:id', async (req, res) => {
         await PantryModel.update(
             { title, meat, veggies, fruit, spices, servings, timeToCook },
             { where: { id: req.params.id }, returning: true }
-
         )
             .then((result) => {
                 res.status(200).json({
