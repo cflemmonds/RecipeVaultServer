@@ -30,6 +30,11 @@ const UserModel = db.define("user", {
         type: DataTypes.STRING(1000),
         allowNull: false,
         // unique: true
+    },
+    admin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false, 
+        defaultValue: false
     }
 })
 

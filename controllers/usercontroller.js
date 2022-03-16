@@ -12,16 +12,31 @@ const models = require("../models");
 //! REGISTER
 
 router.post('/register', async (req, res) => {
-    const { firstName, lastName, username, email, password } = req.body;
+    const { firstName, lastName, username, email, password, admin } = req.body;
+
+    if (admin == true) {
+        let adminUser = await models.UserModel.findAll({
+            where: { admin: true },
+        })
+    
+        /* if (adminUser.length > 0) {
+            res.status(406).json({
+                message: "test"
+            })
+            return;
+        } */
+    }
+
     try {
         const user = await UserModel.create({
             firstName,
             lastName,
             username,
             email,
-            password: bcrypt.hashSync(password, 13)
+            password: bcrypt.hashSync(password, 13),
+            admin: req.body.admin ? true : false,
         });
-        console.log(user)
+        // console.log(user)
 
         let token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
         res.status(201).json({
@@ -93,13 +108,13 @@ router.get('/userinfo', async (req, res) => {
                 }
             ]
         })
-        .then(
-            users => {
-                res.status(200).json({
-                    users: users
-                })
-            }
-        )
+            .then(
+                users => {
+                    res.status(200).json({
+                        users: users
+                    })
+                }
+            )
     } catch (err) {
         res.status(500).json({
             message: err.message
