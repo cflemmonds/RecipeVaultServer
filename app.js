@@ -16,13 +16,13 @@ app.use('/comments', controllers.commentsController);
 dbConnection.authenticate()
     .then(()=> dbConnection.sync(/* {force: true} */))
     .then(()=> {
-        // app.listen(process.env.PORT, ()=> {
-        //     console.log(`[Server]: Recipe Vault is listening on {process.env.PORT}.`)
-        // })
+        app.listen(process.env.PORT, ()=> {
+            console.log(`[Server]: Recipe Vault is listening on {process.env.PORT}.`)
+        })
 
-        app.listen(3000, () => {
-            console.log(`[Server]: Recipe Vault is listening on 3000`);
-        });
+        // app.listen(3000, () => {
+        //     console.log(`[Server]: Recipe Vault is listening on 3000`);
+        // });
     })
     .catch((err)=> {
         console.log(`[Server]: Server crashed. Error = ${err}`);
