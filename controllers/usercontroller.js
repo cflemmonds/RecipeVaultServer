@@ -19,12 +19,12 @@ router.post('/register', async (req, res) => {
             where: { admin: true },
         })
     
-        if (adminUser.length>0) {
-            res.status(409).json({
-                message: err.message,
-                message: "Standard user created"
+        /* if (adminUser.length > 0) {
+            res.status(406).json({
+                message: "test"
             })
-        }
+            return;
+        } */
     }
 
     try {
@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
             password: bcrypt.hashSync(password, 13),
             admin: req.body.admin ? true : false,
         });
-        console.log(user)
+        // console.log(user)
 
         let token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
         res.status(201).json({
